@@ -1,0 +1,9 @@
+body{
+	background-image:url(/imagenes/f.png);
+	background-repeat: no-repeat;
+	background-size:cover;
+	background-position:inherit;
+}
+h1{
+	color: fuchsia;
+}

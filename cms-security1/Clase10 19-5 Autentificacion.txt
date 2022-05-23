@@ -1,0 +1,167 @@
+Autenticacion sin BD externa
+Autorizacion
+Utilizar los fragmentos de Thymeleaf
+Thymeleaf + Spring Security integration basics
+https://www.thymeleaf.org/doc/articles/springsecurity.html
+CNS CONTENT MANAGE SYSTEM
+___________________________________________________________________
+LIBRERIAS
+- Spring web
+- dev Tools
+- Thymeleaf
+- Spring Security
+
+CONTROLERS
+
+SitioController
+AdminController
+
+RUTAS
+/inicio (pública)
+/nosotros (pública)
+/contacto (pública)
+
+@Controller
+
+public class SitioController {
+	
+	@GetMapping("/")
+	public String inicio() {
+		return "inicio";
+	}
+	
+	@GetMapping("/nosotros")
+	public String nosotros() {
+		return "nosotros";
+	}
+	@GetMapping("/contacto")
+	public String contacto() {
+		return "contacto";
+	}
+}
+_________________________________________________________
+template/admin/index (privada)
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Index</title>
+</head>
+<body>
+	<nav data-th-replace="parts/menu:: menu">
+	<!-- PARA HACER USO DEL MENU EN DIFERENTES PAGINAS DE HTML -->
+	</nav>
+</body>
+</html>
+___________________________________
+template/admin/reporte (privada)
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Reporte</title>
+</head>
+<body>
+	<nav data-th-replace="parts/menu:: menu">
+	<!-- PARA HACER USO DEL MENU EN DIFERENTES PAGINAS DE HTML -->
+	</nav>
+</body>
+</html>
+___________________________________
+
+@Controller
+@RequestMapping("/admin")
+public class AdminController {
+	
+	@GetMapping("/index")
+	public String index() {
+		return "admin/index";
+	}
+	@GetMapping("/reporte")
+	public String reporte() {
+		return "admin/reporte";
+	}
+}
+__________________________________________________________
+template/parts/contacto.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Contacto</title>
+</head>
+<body>
+	<nav data-th-replace="parts/menu:: menu">
+	<!-- PARA HACER USO DEL MENU EN DIFERENTES PAGINAS DE HTML -->
+	</nav>
+</body>
+</html>
+____________________________
+template/nosotros.html
+____________________________
+template/inicio.html
+<body>
+	<nav data-th-replace="parts/menu:: menu">
+	<!-- PARA HACER USO DEL MENU EN DIFERENTES PAGINAS DE HTML -->
+	</nav>
+</body>
+________________________________________________________________
+Partes
+
+template/parts/head.html
+
+template/parts/menu.html
+<body>
+	<nav data-th-fragment="menu"><!-- DEFINIR UN FRAGMENTO -->
+		PAOLA
+	</nav>
+</body>
+_________________________
+template/parts/scripts.html
+
+<!DOCTYPE html>
+<html>
+
+<body>
+	<div data-th-fragment="scripts" data-th-remove="tag">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+</div>
+</body>
+</html>
+Para insertar en cada página los scripts JS:
+
+<div data-th-replace="parts/scripts :: scripts"></div>
+_____________________________________________________________________
+modificar application.properties
+* CONFIGURAR UN USUARIO Y CONTRASEÑA
+spring.security.user.name=Paola
+spring.security.user.password=1308
+spring.security.user.roles=ADMIN
+
+* CONFIGURAR LOS PERMISOS
+crear package 
+crear clase ConfiguracionSeguridadWeb
+@Configuration
+@EnableWebSecurity
+public class ConfiguracionSeguridadWeb extends WebSecurityConfigurerAdapter {
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		//VAMOS A CONFIGURAR LAS RUTAS A NECESITAR
+		http
+			.authorizeRequests(authorize -> authorize
+					.mvcMatchers("/", "/nosotros", "/contacto").permitAll()
+					.mvcMatchers("/admin/index", "/admin/reporte").hasRole("ADMIN")
+					.anyRequest().authenticated())
+			.logout(logout -> logout
+					.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
+					);
+	}
+
+}
+
+
+
+

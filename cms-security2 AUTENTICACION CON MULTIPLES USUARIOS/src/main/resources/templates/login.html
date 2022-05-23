@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Login</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" />
+</head>
+<body>
+	<div class="container">
+	<main class="form-signin w-100 m-auto">
+  <form method="POST" th:action="@{/ingreso}">
+    <img class="mb-4" style="text-align: center;" th:src="@{/imagenes/f.png}" >
+    <h1 class="h3 mb-3 fw-normal">Autentifique</h1>
+    	<div data-th-if="${param.error}" class="alert alert-danger">
+			Usuario y/o contraseña inválido(s).
+		</div>
+    
+	<div class="form-floating">
+		<input type="text" class="form-control" id="floatingInput" name="username">
+		<label for="floatingInput">Usuario</label>
+	</div>
+	<div class="form-floating">
+	<input type="password" class="form-control" id="floatingPassword" name="password">
+	<label for="floatingPassword">Password</label>
+	</div>
+
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> Remember me
+      </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">INGRESE</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
+  </form>
+  
+</main>
+</div>
+</body>
+</html>
