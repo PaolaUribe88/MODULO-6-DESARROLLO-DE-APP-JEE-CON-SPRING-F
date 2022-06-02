@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Usuarios</title>
+</head>
+<body>
+	<h1 style="text-decoration: underline;">Usuarios</h1>
+	<ol style="color:blue;">
+		<li data-th-each="usuario:${usuarios}" >
+			<span data-th-text="${usuario.nombre}"/> |
+			<span data-th-text="${usuario.email}"/> |
+			<span data-th-text="${usuario.direccion.ciudad}"/>
+		
+		</li>
+	</ol>
+</body>
+</html>
